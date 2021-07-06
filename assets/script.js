@@ -1,5 +1,6 @@
 var APIkey = "9c1cf60e6ddac2dd60ea87d2e91c6a50";
 
+
 // GIVEN a weather dashboard with form inputs
 
 // WHEN I search for a city
