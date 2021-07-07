@@ -1,16 +1,37 @@
-.hide{
-    display: none;
+nav a {
+margin-left: 25px;
 }
 
 /* classes for uv index */
 .safe{
     color: greenyellow;
+    font-weight: bold;
 }
 
 .danger{
     color: red;
+    font-weight: bold;
 }
 
 .moderate{
     color:goldenrod;
+    font-weight: bold;
+}
+
+/* larger font for dates and city */
+
+.bigtxt{
+    font-size: larger;
+    font-weight: bold;
+}
+
+/* styling for last city button */
+
+#lcBtn{
+    color:white;
+    background-color: salmon;
+    height: 38px;
+    width: 92px;
+    border-color: salmon;
+    border-radius: 5%;
 }

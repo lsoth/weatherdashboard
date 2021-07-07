@@ -1,15 +1,21 @@
 var APIKey = "9c1cf60e6ddac2dd60ea87d2e91c6a50";
 
 var searchFormEl = document.getElementById("srchBox");
+var buttonEl = $('#lcBtn')
 
 //THIS FUNCTION RUNS ONCE THE SUBMIT BUTTON IS PRESSED AND VERIFIES THAT THERE IS A RESPONSE ENTERED,
 //FURTHERMORE CREATES A WEATHER OBJECT GIVEN DATA FROM THE API
+function onStart(){
+    $('#srchHist').append('<button id="lcBtn">' + window.localStorage.getItem('lastCity') + '</button>')   
+}
 
 function searchFormSubmit(event) {
 
     event.preventDefault();
 
     var city = $("#srchForm").val();
+
+    localStorage.setItem('lastCity',city)
 
     if (!city) {
         console.error('Please enter a search input value');
@@ -38,7 +44,7 @@ function addWeatherInfo(weather) {
     $('#weatherToday').html('');
     $('#uvIndex').html('');
     $('#fiveDay').html('');
-    $('#weatherToday').append(`<p>
+    $('#weatherToday').append(`<p class="bigtxt">
     ${weather.name} ${' '} ${moment.unix(weather.dt).format("MMM DD, YY")}
     </p>`);
     $('#weatherToday').append('<img src="' + iconUrl + '" />');
@@ -82,7 +88,7 @@ function addWeatherInfo(weather) {
             console.log(fiveDay.list[i])
             var FiconUrl = "http://openweathermap.org/img/wn/" +fiveDay.list[i].weather[0].icon+"@2x.png"
             // console.log(fiveDay.list[i].weather[0].icon)
-            $('#fiveDay').append(`<p>
+            $('#fiveDay').append(`<p class="bigtxt">
             ${moment.unix(fiveDay.list[i].dt).format("MMM DD, YY")}
             </p>`);
             $('#fiveDay').append('<img src="' + FiconUrl + '" />');
@@ -95,8 +101,13 @@ function addWeatherInfo(weather) {
 }
 
 
+// buttonEl.addEventListener("click",)
 
 searchFormEl.addEventListener("submit", searchFormSubmit);
+
+
+onStart();
+
 
 
 
@@ -104,22 +115,3 @@ searchFormEl.addEventListener("submit", searchFormSubmit);
 // lastCityBtn.addEventListener ("click", function() {
 // alert("did something");
 // });
-// GIVEN a weather dashboard with form inputs
-
-// WHEN I search for a city
-// THEN I am presented with current and future conditions for that city and that city is added to the search history\
-
-// WHEN I view current weather conditions for that city
-// THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-
-
-// WHEN I view the UV index
-// THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-
-
-// WHEN I view future weather conditions for that city
-// THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-
-
-// WHEN I click on a city in the search history
-// THEN I am again presented with current and future conditions for that city
