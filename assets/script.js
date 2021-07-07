@@ -1,9 +1,23 @@
 var APIKey = "9c1cf60e6ddac2dd60ea87d2e91c6a50";
 // var city = $("#srchForm").val()
-var city = "seattle"
-var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+// var city = "seattle"
+var searchFormEl = document.getElementById("srchBox")
 
-fetch(queryURL)
+function searchFormSubmit(event) {
+
+    event.preventDefault();
+
+    var city = $("#srchForm").val();
+
+    if (!city) {
+        console.error('Please enter a search input value');
+        return;
+
+    }
+
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+
+    fetch(queryURL)
     .then(Response => {
         console.log(Response);
         return Response.json();
@@ -12,7 +26,9 @@ fetch(queryURL)
     .then(weather => {
         console.log(weather);
     })
+}
 
+searchFormEl.addEventListener('click', searchFormSubmit);
 // GIVEN a weather dashboard with form inputs
 
 // WHEN I search for a city
