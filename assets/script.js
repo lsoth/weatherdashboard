@@ -37,6 +37,7 @@ function addWeatherInfo(weather) {
     var iconUrl = "http://openweathermap.org/img/wn/" +weather.weather[0].icon+"@2x.png"
     $('#weatherToday').html('');
     $('#uvIndex').html('');
+    $('#fiveDay').html('');
     $('#weatherToday').append(`<p>
     ${weather.name} ${' '} ${moment.unix(weather.dt).format("MMM DD, YY")}
     </p>`);
@@ -66,6 +67,8 @@ function addWeatherInfo(weather) {
         }
     })
     
+
+    // creating the five day forcast!
     var fiveDayUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + weather.name + "&appid=" + APIKey + "&units=imperial"
     
     fetch(fiveDayUrl)
@@ -77,6 +80,16 @@ function addWeatherInfo(weather) {
         console.log(fiveDay)
         for (let i = 0; i < fiveDay.list.length; i += 8) {
             console.log(fiveDay.list[i])
+            var FiconUrl = "http://openweathermap.org/img/wn/" +fiveDay.list[i].weather[0].icon+"@2x.png"
+            // console.log(fiveDay.list[i].weather[0].icon)
+            $('#fiveDay').append(`<p>
+            ${moment.unix(fiveDay.list[i].dt).format("MMM DD, YY")}
+            </p>`);
+            $('#fiveDay').append('<img src="' + FiconUrl + '" />');
+            $('#fiveDay').append('<p> Weather Day Temperature: ' + fiveDay.list[i].main.feels_like + '&deg;f</p>')
+            $('#fiveDay').append('<p> Humidity Levels: ' + fiveDay.list[i].main.humidity + '% </p>')
+            $('#fiveDay').append('<p> Wind Speed: ' + fiveDay.list[i].wind.speed + 'mph </p>' + '<hr>')
+
         }
     })
 }
