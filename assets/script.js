@@ -6,7 +6,9 @@ var buttonEl = $('#lcBtn')
 //THIS FUNCTION RUNS ONCE THE SUBMIT BUTTON IS PRESSED AND VERIFIES THAT THERE IS A RESPONSE ENTERED,
 //FURTHERMORE CREATES A WEATHER OBJECT GIVEN DATA FROM THE API
 function onStart(){
-    $('#srchHist').append('<button id="lcBtn">' + window.localStorage.getItem('lastCity') + '</button>')   
+    if (window.localStorage.getItem('lastCity')){
+    $('#srchHist').append('<button id="lcBtn">' + window.localStorage.getItem('lastCity') + '</button>')
+    }
 }
 
 function searchFormSubmit(event) {
@@ -23,7 +25,7 @@ function searchFormSubmit(event) {
 
     }
 
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
 
     fetch(queryURL)
     .then(Response => {
@@ -40,7 +42,7 @@ function searchFormSubmit(event) {
 //THIS FUNCTION IS USED TO ADD SELECTED WEATHER DATA TO THE PAGE
 
 function addWeatherInfo(weather) {
-    var iconUrl = "http://openweathermap.org/img/wn/" +weather.weather[0].icon+"@2x.png"
+    var iconUrl = "https://openweathermap.org/img/wn/" +weather.weather[0].icon+"@2x.png"
     $('#weatherToday').html('');
     $('#uvIndex').html('');
     $('#fiveDay').html('');
@@ -86,7 +88,7 @@ function addWeatherInfo(weather) {
         console.log(fiveDay)
         for (let i = 0; i < fiveDay.list.length; i += 8) {
             console.log(fiveDay.list[i])
-            var FiconUrl = "http://openweathermap.org/img/wn/" +fiveDay.list[i].weather[0].icon+"@2x.png"
+            var FiconUrl = "https://openweathermap.org/img/wn/" +fiveDay.list[i].weather[0].icon+"@2x.png"
             // console.log(fiveDay.list[i].weather[0].icon)
             $('#fiveDay').append(`<p class="bigtxt">
             ${moment.unix(fiveDay.list[i].dt).format("MMM DD, YY")}
