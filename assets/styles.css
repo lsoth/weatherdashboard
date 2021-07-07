@@ -1,3 +1,15 @@
 .hide{
     display: none;
 }
+
+.safe{
+    color: greenyellow;
+}
+
+.danger{
+    color: red;
+}
+
+.moderate{
+    color:goldenrod;
+}

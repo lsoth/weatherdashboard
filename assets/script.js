@@ -42,11 +42,14 @@ function searchFormSubmit(event) {
         addWeatherInfo(weather)
     })
 
+
+
 }
 
 function addWeatherInfo(weather) {
     var iconUrl = "http://openweathermap.org/img/wn/" +weather.weather[0].icon+"@2x.png"
     $('#weatherToday').html('');
+    $('#uvIndex').html('');
     $('#weatherToday').append(`<p>
     ${weather.name} ${' '} ${moment.unix(weather.dt).format("MMM DD, YY")}
     </p>`);
@@ -55,6 +58,24 @@ function addWeatherInfo(weather) {
     $('#weatherToday').append('<p> Humidity Levels: ' + weather.main.humidity + '% </p>')
     $('#weatherToday').append('<p> Wind Speed: ' + weather.wind.speed + 'mph </p>')
 
+    var uvIndexURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + weather.coord.lat + '&lon=' +weather.coord.lon+ '&exclude=minutely,hourly,daily,alerts&appid=' +APIKey
+    
+    fetch (uvIndexURL)
+    .then(res3 => {
+        console.log(res3);
+        return res3.json();
+    })
+    .then(uvi => {
+        console.log(uvi);
+        $('#uvIndex').append('<p> UV Index: ' + uvi.current.uvi + '</p>');
+        if (uvi.current.uvi <= 2){
+            $('#uvIndex').addClass("safe")
+        }else if(uvi.current.uvi > 7){
+            $('#uvIndex').addClass("danger")
+        }else{
+            $('uvIndex').addClass("moderate")
+        }
+    })
 }
 
 var fiveDayUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + "seattle" + "&appid=" + APIKey + "&units=imperial"
@@ -66,11 +87,15 @@ fetch(fiveDayUrl)
 })
 .then(fiveDay => {
     console.log(fiveDay)
-    // use a for loop
-    // add 8 to i
+    for (let i = 0; i < fiveDay.list.length; i += 8) {
+        console.log(fiveDay.list[i])
+    }
 })
 
+
 searchFormEl.addEventListener("submit", searchFormSubmit);
+
+
 
 // lastCityBtn.addEventListener ("click", function() {
 // alert("did something");
