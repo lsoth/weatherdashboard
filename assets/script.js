@@ -15,7 +15,21 @@ function searchFormSubmit(event) {
 
     }
 
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+    // var lastCityBtn = document.createElement("button");
+    // lastCityBtn.innerHTML = city;
+
+
+    // var searchHistory = document.getElementById("srchHist");
+    // searchHistory.appendChild(button);
+
+
+    // button.addEventListener ("click", function() {
+    // alert("did something");
+    // });
+
+    //save city in local storage list out using append function
+
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
 
     fetch(queryURL)
     .then(Response => {
@@ -25,10 +39,42 @@ function searchFormSubmit(event) {
     })
     .then(weather => {
         console.log(weather);
+        addWeatherInfo(weather)
     })
+
 }
 
-searchFormEl.addEventListener('click', searchFormSubmit);
+function addWeatherInfo(weather) {
+    var iconUrl = "http://openweathermap.org/img/wn/" +weather.weather[0].icon+"@2x.png"
+    $('#weatherToday').html('');
+    $('#weatherToday').append(`<p>
+    ${weather.name} ${' '} ${moment.unix(weather.dt).format("MMM DD, YY")}
+    </p>`);
+    $('#weatherToday').append('<img src="' + iconUrl + '" />');
+    $('#weatherToday').append('<p> Today\'s Weather: ' + weather.main.feels_like + '&deg;f</p>')
+    $('#weatherToday').append('<p> Humidity Levels: ' + weather.main.humidity + '% </p>')
+    $('#weatherToday').append('<p> Wind Speed: ' + weather.wind.speed + 'mph </p>')
+
+}
+
+var fiveDayUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + "seattle" + "&appid=" + APIKey + "&units=imperial"
+
+fetch(fiveDayUrl)
+.then(res => {
+    console.log(res);
+    return res.json();
+})
+.then(fiveDay => {
+    console.log(fiveDay)
+    // use a for loop
+    // add 8 to i
+})
+
+searchFormEl.addEventListener("submit", searchFormSubmit);
+
+// lastCityBtn.addEventListener ("click", function() {
+// alert("did something");
+// });
 // GIVEN a weather dashboard with form inputs
 
 // WHEN I search for a city
