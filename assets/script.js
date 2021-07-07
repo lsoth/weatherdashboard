@@ -1,7 +1,9 @@
 var APIKey = "9c1cf60e6ddac2dd60ea87d2e91c6a50";
-// var city = $("#srchForm").val()
-// var city = "seattle"
-var searchFormEl = document.getElementById("srchBox")
+
+var searchFormEl = document.getElementById("srchBox");
+
+//THIS FUNCTION RUNS ONCE THE SUBMIT BUTTON IS PRESSED AND VERIFIES THAT THERE IS A RESPONSE ENTERED,
+//FURTHERMORE CREATES A WEATHER OBJECT GIVEN DATA FROM THE API
 
 function searchFormSubmit(event) {
 
@@ -15,20 +17,6 @@ function searchFormSubmit(event) {
 
     }
 
-    // var lastCityBtn = document.createElement("button");
-    // lastCityBtn.innerHTML = city;
-
-
-    // var searchHistory = document.getElementById("srchHist");
-    // searchHistory.appendChild(button);
-
-
-    // button.addEventListener ("click", function() {
-    // alert("did something");
-    // });
-
-    //save city in local storage list out using append function
-
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
 
     fetch(queryURL)
@@ -41,10 +29,9 @@ function searchFormSubmit(event) {
         console.log(weather);
         addWeatherInfo(weather)
     })
-
-
-
 }
+
+//THIS FUNCTION IS USED TO ADD SELECTED WEATHER DATA TO THE PAGE
 
 function addWeatherInfo(weather) {
     var iconUrl = "http://openweathermap.org/img/wn/" +weather.weather[0].icon+"@2x.png"
@@ -57,6 +44,8 @@ function addWeatherInfo(weather) {
     $('#weatherToday').append('<p> Today\'s Weather: ' + weather.main.feels_like + '&deg;f</p>')
     $('#weatherToday').append('<p> Humidity Levels: ' + weather.main.humidity + '% </p>')
     $('#weatherToday').append('<p> Wind Speed: ' + weather.wind.speed + 'mph </p>')
+
+    //THIS PORTION OF THE FUNCTION GRABS THE UV INDEX NUMBER AND ADDS A CLASS TO CHANGE FONT COLOR DEPENDING ON WEATHER CONDITIONS
 
     var uvIndexURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + weather.coord.lat + '&lon=' +weather.coord.lon+ '&exclude=minutely,hourly,daily,alerts&appid=' +APIKey
     
@@ -76,24 +65,26 @@ function addWeatherInfo(weather) {
             $('uvIndex').addClass("moderate")
         }
     })
+    
+    var fiveDayUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + weather.name + "&appid=" + APIKey + "&units=imperial"
+    
+    fetch(fiveDayUrl)
+    .then(res => {
+        console.log(res);
+        return res.json();
+    })
+    .then(fiveDay => {
+        console.log(fiveDay)
+        for (let i = 0; i < fiveDay.list.length; i += 8) {
+            console.log(fiveDay.list[i])
+        }
+    })
 }
 
-var fiveDayUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + "seattle" + "&appid=" + APIKey + "&units=imperial"
-
-fetch(fiveDayUrl)
-.then(res => {
-    console.log(res);
-    return res.json();
-})
-.then(fiveDay => {
-    console.log(fiveDay)
-    for (let i = 0; i < fiveDay.list.length; i += 8) {
-        console.log(fiveDay.list[i])
-    }
-})
 
 
 searchFormEl.addEventListener("submit", searchFormSubmit);
+
 
 
 
